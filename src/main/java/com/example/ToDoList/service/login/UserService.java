@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,5 +44,24 @@ public class UserService {
 		Role userRole = roleRepo.findByRole("ADMIN");
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 		return userRepo.save(user);
+	}
+	
+	public User updateUser(User user) {
+		return userRepo.save(user);
+	}
+	
+	public User getLoggedUser() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		String username;
+		
+		if(principal instanceof UserDetails) {
+			username = ((UserDetails)principal).getUsername();
+		}
+		else {
+			username = principal.toString();
+		}
+
+		return findUserByUserName(username);
 	}
 }

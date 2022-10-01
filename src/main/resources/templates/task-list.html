@@ -15,7 +15,7 @@
 <body>
 
 <div class="container">
-	<h3>Task Directory</h3>
+	<h3>Welcome [[${#request.userPrincipal.principal.username}]]</h3>
 	<hr>
 	<a th:href="@{/list/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
 		Add Task

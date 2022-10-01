@@ -2,8 +2,10 @@ package com.example.ToDoList.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +16,7 @@ import com.example.ToDoList.DAO.TaskDAO;
 import com.example.ToDoList.DAO.TaskDAOImp;
 import com.example.ToDoList.DAO.TaskRepository;
 import com.example.ToDoList.entity.Task;
+import com.example.ToDoList.entity.User;
 
 
 @Service
@@ -64,6 +67,13 @@ public class TaskServiceImpl implements TaskService {
 	public void deleteTaskById(int theId) {
 //		taskDAO.delete(theId);
 		taskDAO.deleteById(theId);
+	}
+
+	@Override
+	@Transactional
+	public Set<Task> findUserTasks(User user) {
+		Set<Task> userTasks = user.getTasks();
+		return userTasks;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.example.ToDoList.entity;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -25,7 +26,7 @@ import lombok.Setter;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id")
 	private int id;
 	
@@ -55,6 +56,10 @@ public class User {
 	@ManyToMany
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
+	
+	@ManyToMany
+	@JoinTable(name = "user_tasks", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns= @JoinColumn(name = "task_id"))
+	private Set<Task> tasks; 
 	
 	@Column(name="active")
 	private Boolean active;
@@ -119,7 +124,7 @@ public class User {
 			@Length(min = 5, message = "User name must be longer than 5 characters") @NotEmpty(message = "*Please provide a user name") String userName,
 			@Length(min = 5, message = "Password must be longer than 5 characters") @NotEmpty(message = "*Please provide your password") String password,
 			@NotEmpty(message = "*Please provide your name") String firstName,
-			@NotEmpty(message = "*Please provide your last name") String lastName, Set<Role> roles, Boolean isActive, String email) {
+			@NotEmpty(message = "*Please provide your last name") String lastName, Set<Role> roles, Boolean isActive, String email, Set<Task> tasks) {
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
@@ -146,6 +151,16 @@ public class User {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+
+	public Set<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(Set<Task> tasks) {
+		this.tasks = tasks;
+	}
 	
-	
+	public void addTask(Task task) {
+		tasks.add(task);
+	}
 }
